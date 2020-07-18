@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "710653065879",
+    "firebase_url": "https://jcimeet.firebaseio.com",
+    "project_id": "jcimeet",
+    "storage_bucket": "jcimeet.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:710653065879:android:bd173c38a9be97792907d2",
+        "android_client_info": {
+          "package_name": "com.example.jci_meet"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "710653065879-blbgj5ajs8e476f0e9fp7lbagk5nm7bf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCTczldYTDDuzSjaP472BvW0wDJmGgvt8I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "710653065879-blbgj5ajs8e476f0e9fp7lbagk5nm7bf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
