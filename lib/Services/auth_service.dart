@@ -13,6 +13,7 @@ class AuthService {
     final currentUser = await _firebaseAuth.createUserWithEmailAndPassword(
       email: email,
       password: password,
+
     );
 
     // Update the username
