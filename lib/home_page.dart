@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'pages.dart';
-import 'Views/Home_View.dart';
-
+import 'package:jci_meet/Views/Home_View.dart';
+import 'package:jci_meet/widgets/provider_widget.dart';
+import 'package:jci_meet/Services/auth_service.dart';
 class Home extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -22,6 +23,24 @@ class _HomeState extends State<Home> {
     return Scaffold(
       appBar: AppBar(
         title: Text("JCI Meet"),
+        actions: <Widget>[
+
+          IconButton(
+            icon: Icon(Icons.undo),
+            onPressed: () async {
+              try {
+                AuthService auth = Provider.of(context).auth;
+                await auth.signOut();
+                print("Signed Out!");
+              } catch (e) {
+                print (e);
+              }
+            },
+
+          ),
+
+
+        ],
       ),
       body: _children[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
