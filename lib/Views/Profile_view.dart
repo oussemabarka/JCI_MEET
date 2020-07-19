@@ -1,14 +1,9 @@
 import 'package:flutter/material.dart';
-
-
-
-
-
-class Pofile extends StatelessWidget {
+class PofileView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.orange,
+      color: Colors.white,
     );
   }
 }

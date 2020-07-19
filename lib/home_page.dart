@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'pages.dart';
+import 'package:jci_meet/Views/Profile_view.dart';
 import 'package:jci_meet/Views/Home_View.dart';
 import 'package:jci_meet/widgets/provider_widget.dart';
 import 'package:jci_meet/Services/auth_service.dart';
@@ -14,8 +14,7 @@ class _HomeState extends State<Home> {
   int _currentIndex = 0;
   final List<Widget> _children = [
     HomeView(),
-
-    Pofile(),
+    PofileView(),
   ];
 
   @override

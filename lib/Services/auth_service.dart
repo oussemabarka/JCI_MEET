@@ -13,7 +13,6 @@ class AuthService {
     final currentUser = await _firebaseAuth.createUserWithEmailAndPassword(
       email: email,
       password: password,
-
     );
 
     // Update the username
@@ -37,7 +36,13 @@ class AuthService {
     return _firebaseAuth.signOut();
   }
 
+  // Reset Password
+  Future sendPasswordResetEmail(String email) async {
+    return _firebaseAuth.sendPasswordResetEmail(email: email);
+  }
+
 }
+
 class NameValidator {
   static String validate(String value) {
     if(value.isEmpty) {

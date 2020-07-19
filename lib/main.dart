@@ -4,6 +4,7 @@ import 'package:jci_meet/Views/First_pages.dart';
 import 'package:jci_meet/Services/auth_service.dart';
 import 'package:jci_meet/widgets/provider_widget.dart';
 import 'package:jci_meet/Views/Sign_up_View.dart';
+
 void main() {
   runApp(MyApp());
 }
