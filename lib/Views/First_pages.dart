@@ -61,8 +61,8 @@ class FirstView extends StatelessWidget {
                         "With an account, your data will be securely saved, allowing you to access it from multiple devices.",
                         primaryButtonText: "Create My Account",
                         primaryButtonRoute: "/signUp",
-                        secondaryButtonText: "Maybe Later",
-                        secondaryButtonRoute: "/home",
+                        //secondaryButtonText: "Maybe Later",
+                       // secondaryButtonRoute: "/home",
 
                       ),
                     );

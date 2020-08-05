@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:jci_meet/Services/auth_service.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:jci_meet/widgets/provider_widget.dart';
-
+import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
 // TODO move this to tone location
 final primaryColor = const Color(0xFF75A2EA);
 
-enum AuthFormType { signIn, signUp, reset }
+enum AuthFormType { signIn, signUp, reset, convert }
 
 class SignUpView extends StatefulWidget {
   final AuthFormType authFormType;
@@ -108,6 +108,7 @@ class _SignUpViewState extends State<SignUpView> {
                 ),
               )
             ],
+
           ),
         ),
       ),
@@ -240,7 +241,7 @@ class _SignUpViewState extends State<SignUpView> {
   List<Widget> buildButtons() {
     String _switchButtonText, _newFormState, _submitButtonText;
     bool _showForgotPassword = false;
-
+    bool _showSocial = true;
     if (authFormType == AuthFormType.signIn) {
       _switchButtonText = "Create New Account";
       _newFormState = "signUp";
@@ -250,6 +251,7 @@ class _SignUpViewState extends State<SignUpView> {
       _switchButtonText = "Return to Sign In";
       _newFormState = "signIn";
       _submitButtonText = "Submit";
+      _showSocial = false;
     } else {
       _switchButtonText = "Have an Account? Sign In";
       _newFormState = "signIn";
@@ -283,7 +285,8 @@ class _SignUpViewState extends State<SignUpView> {
         onPressed: () {
           switchFormState(_newFormState);
         },
-      )
+      ),
+      buildSocialIcons(_showSocial),
     ];
   }
 
@@ -299,6 +302,38 @@ class _SignUpViewState extends State<SignUpView> {
             authFormType = AuthFormType.reset;
           });
         },
+      ),
+      visible: visible,
+    );
+  }
+  Widget buildSocialIcons(bool visible) {
+    final _auth = Provider.of(context).auth;
+    return Visibility(
+      child: Column(
+        children: <Widget>[
+          Divider(
+            color: Colors.white,
+          ),
+          SizedBox(height: 10),
+          GoogleSignInButton(
+            onPressed: () async {
+              try {
+                if(authFormType == AuthFormType.convert) {
+                  await _auth.converWithGoogle();
+                  Navigator.of(context).pop();
+                } else {
+                  await _auth.signInWithGoogle();
+                  Navigator.of(context).pushReplacementNamed('/home');
+                }
+              } catch (e) {
+                setState(() {
+                  print(e);
+                  _warning = e.message;
+                });
+              }
+            },
+          )
+        ],
       ),
       visible: visible,
     );
