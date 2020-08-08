@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
+import 'package:flutter_facebook_login/flutter_facebook_login.dart';
+
 class AuthService {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
@@ -13,14 +15,14 @@ class AuthService {
   // Email & Password Sign Up
   Future<String> createUserWithEmailAndPassword(String email, String password,
       String name) async {
-    final currentUser = await _firebaseAuth.createUserWithEmailAndPassword(
+    final authResult  = await _firebaseAuth.createUserWithEmailAndPassword(
       email: email,
       password: password,
     );
 
     // Update the username
-    await updateUserName(name, currentUser);
-    return currentUser.uid;
+    await updateUserName(name, authResult.user);
+    return authResult.user.uid;
   }
 
   Future updateUserName(String name, FirebaseUser currentUser) async {
@@ -34,8 +36,7 @@ class AuthService {
   Future<String> signInWithEmailAndPassword(String email,
       String password) async {
     return (await _firebaseAuth.signInWithEmailAndPassword(
-        email: email, password: password))
-        .uid;
+        email: email, password: password)).user.uid;
   }
 
   // Sign Out
@@ -68,9 +69,60 @@ class AuthService {
       idToken: _googleAuth.idToken,
       accessToken: _googleAuth.accessToken,
     );
-    return (await _firebaseAuth.signInWithCredential(credential)).uid;
+    return (await _firebaseAuth.signInWithCredential(credential)).user.uid;
   }
 
+  //facebook service
+
+  Future<void> signUpWithFacebook() async{
+
+    try {
+      var facebookLogin = new FacebookLogin();
+      var result = await facebookLogin.logIn(['email']);
+
+      if(result.status == FacebookLoginStatus.loggedIn) {
+        final AuthCredential credential = FacebookAuthProvider.getCredential(
+          accessToken: result.accessToken.token,
+
+        );
+
+        final FirebaseUser user = (await FirebaseAuth.instance.signInWithCredential(credential)).user;
+        print('signed in ' + user.displayName);
+        return user;
+      }
+    }catch (e) {
+      print(e.message);
+    }
+
+  }
+
+  Future<void> googleSignUp() async {
+    try {
+      final GoogleSignIn _googleSignIn = GoogleSignIn(
+        scopes: [
+          'email'
+        ],
+      );
+      final FirebaseAuth _auth = FirebaseAuth.instance;
+
+      final GoogleSignInAccount googleUser = await _googleSignIn.signIn();
+      final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+
+      final AuthCredential credential = GoogleAuthProvider.getCredential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      final FirebaseUser user = (await _auth.signInWithCredential(credential)).user;
+      print("signed in " + user.displayName);
+
+      return user;
+    }catch (e) {
+      print(e.message);
+    }
+  }
+
+  
 }
 
 class NameValidator {

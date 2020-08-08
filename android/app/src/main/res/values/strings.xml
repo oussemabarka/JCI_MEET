@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">JCIMEET</string>
+    <string name="facebook_app_id">634146510816475</string>
+    <string name="fb_login_protocol_scheme">fb634146510816475</string>
+
+</resources>

@@ -6,7 +6,7 @@ import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
 // TODO move this to tone location
 final primaryColor = const Color(0xFF75A2EA);
 
-enum AuthFormType { signIn, signUp, reset, convert }
+enum AuthFormType { signIn, signUp, reset, convert,facebook }
 
 class SignUpView extends StatefulWidget {
   final AuthFormType authFormType;
@@ -99,7 +99,7 @@ class _SignUpViewState extends State<SignUpView> {
               buildHeaderText(),
               SizedBox(height: _height * 0.05),
               Padding(
-                padding: const EdgeInsets.all(20.0),
+                padding: const EdgeInsets.all(10.0),
                 child: Form(
                   key: formKey,
                   child: Column(
@@ -167,7 +167,7 @@ class _SignUpViewState extends State<SignUpView> {
       maxLines: 1,
       textAlign: TextAlign.center,
       style: TextStyle(
-        fontSize: 35,
+        fontSize: 25,
         color: Colors.white,
       ),
     );
@@ -179,12 +179,12 @@ class _SignUpViewState extends State<SignUpView> {
       textFields.add(
         TextFormField(
           validator: EmailValidator.validate,
-          style: TextStyle(fontSize: 22.0),
+          style: TextStyle(fontSize: 15.0),
           decoration: buildSignUpInputDecoration("Email"),
           onSaved: (value) => _email = value,
         ),
       );
-      textFields.add(SizedBox(height: 20));
+      textFields.add(SizedBox(height: 10));
       return textFields;
     }
 
@@ -193,34 +193,34 @@ class _SignUpViewState extends State<SignUpView> {
       textFields.add(
         TextFormField(
           validator: NameValidator.validate,
-          style: TextStyle(fontSize: 22.0),
+          style: TextStyle(fontSize: 12.0),
           decoration: buildSignUpInputDecoration("Name"),
           onSaved: (value) => _name = value,
         ),
       );
-      textFields.add(SizedBox(height: 20));
+      textFields.add(SizedBox(height: 10));
     }
 
     // add email & password
     textFields.add(
       TextFormField(
         validator: EmailValidator.validate,
-        style: TextStyle(fontSize: 22.0),
+        style: TextStyle(fontSize: 12.0),
         decoration: buildSignUpInputDecoration("Email"),
         onSaved: (value) => _email = value,
       ),
     );
-    textFields.add(SizedBox(height: 20));
+    textFields.add(SizedBox(height: 10));
     textFields.add(
       TextFormField(
         validator: PasswordValidator.validate,
-        style: TextStyle(fontSize: 22.0),
+        style: TextStyle(fontSize: 12.0),
         decoration: buildSignUpInputDecoration("Password"),
         obscureText: true,
         onSaved: (value) => _password = value,
       ),
     );
-    textFields.add(SizedBox(height: 20));
+    textFields.add(SizedBox(height: 10));
 
     return textFields;
   }
@@ -270,7 +270,7 @@ class _SignUpViewState extends State<SignUpView> {
             padding: const EdgeInsets.all(8.0),
             child: Text(
               _submitButtonText,
-              style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w300),
+              style: TextStyle(fontSize: 10.0, fontWeight: FontWeight.w300),
             ),
           ),
           onPressed: submit,
@@ -314,7 +314,7 @@ class _SignUpViewState extends State<SignUpView> {
           Divider(
             color: Colors.white,
           ),
-          SizedBox(height: 10),
+          SizedBox(height: 10,width: 40,),
           GoogleSignInButton(
             onPressed: () async {
               try {
@@ -332,10 +332,36 @@ class _SignUpViewState extends State<SignUpView> {
                 });
               }
             },
-          )
+          ),
+          SizedBox(height: 10),
+          SizedBox(
+
+            child: RaisedButton(
+              child: Row(
+                children: <Widget>[
+                  Icon(Icons.thumb_up, size: 5),
+                  Text(
+                    '  Sign up with Facebook',
+                    style: TextStyle(fontSize: 8),
+                  ),
+                ],
+              ),
+              textColor: Colors.white,
+              color: Colors.blue[900],
+              padding: EdgeInsets.all(10),
+              onPressed: () async{
+
+                  await _auth.signUpWithFacebook();
+
+                  Navigator.of(context).pushReplacementNamed('/home');
+
+              },
+            ),
+          ),
         ],
       ),
       visible: visible,
     );
   }
+
 }
