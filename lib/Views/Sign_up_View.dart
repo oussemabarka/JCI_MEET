@@ -263,14 +263,14 @@ class _SignUpViewState extends State<SignUpView> {
         width: MediaQuery.of(context).size.width * 0.7,
         child: RaisedButton(
           shape:
-          RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
+          RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
           color: Colors.white,
           textColor: primaryColor,
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
               _submitButtonText,
-              style: TextStyle(fontSize: 10.0, fontWeight: FontWeight.w300),
+              style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w300),
             ),
           ),
           onPressed: submit,
@@ -308,14 +308,17 @@ class _SignUpViewState extends State<SignUpView> {
   }
   Widget buildSocialIcons(bool visible) {
     final _auth = Provider.of(context).auth;
+    const padding = 25.0;
     return Visibility(
       child: Column(
         children: <Widget>[
           Divider(
             color: Colors.white,
           ),
-          SizedBox(height: 10,width: 40,),
           GoogleSignInButton(
+
+            borderRadius: 20.0,
+            text:" SignUp with Google  ",
             onPressed: () async {
               try {
                 if(authFormType == AuthFormType.convert) {
@@ -332,23 +335,16 @@ class _SignUpViewState extends State<SignUpView> {
                 });
               }
             },
-          ),
-          SizedBox(height: 10),
-          SizedBox(
 
-            child: RaisedButton(
-              child: Row(
-                children: <Widget>[
-                  Icon(Icons.thumb_up, size: 5),
-                  Text(
-                    '  Sign up with Facebook',
-                    style: TextStyle(fontSize: 8),
-                  ),
-                ],
-              ),
-              textColor: Colors.white,
-              color: Colors.blue[900],
-              padding: EdgeInsets.all(10),
+          ),
+
+
+
+            FacebookSignInButton(
+              borderRadius: 20.0,
+                text:"SignUp with Facebook",
+              //textStyle: TextStyle(fontSize: 20,),
+
               onPressed: () async{
 
                   await _auth.signUpWithFacebook();
@@ -357,7 +353,7 @@ class _SignUpViewState extends State<SignUpView> {
 
               },
             ),
-          ),
+
         ],
       ),
       visible: visible,

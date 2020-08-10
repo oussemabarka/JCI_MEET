@@ -90,6 +90,7 @@ class AuthService {
         print('signed in ' + user.displayName);
         return user;
       }
+
     }catch (e) {
       print(e.message);
     }
