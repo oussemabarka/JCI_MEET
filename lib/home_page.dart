@@ -3,7 +3,9 @@ import 'package:jci_meet/Views/Profile_view.dart';
 import 'package:jci_meet/Views/Home_View.dart';
 import 'package:jci_meet/widgets/provider_widget.dart';
 import 'package:jci_meet/Services/auth_service.dart';
+import 'package:jci_meet/Profile/profile_view.dart';
 class Home extends StatefulWidget {
+
   @override
   State<StatefulWidget> createState() {
     return _HomeState();
@@ -14,7 +16,8 @@ class _HomeState extends State<Home> {
   int _currentIndex = 0;
   final List<Widget> _children = [
     HomeView(),
-    PofileView(),
+    PofileView1(),
+    ProfileView(),
   ];
 
   @override
@@ -37,7 +40,12 @@ class _HomeState extends State<Home> {
             },
 
           ),
-
+          IconButton(
+            icon: Icon(Icons.person_pin),
+            onPressed: ()async {
+              Navigator.pushNamed(context,"/PofileView");
+            },
+          )
 
         ],
       ),

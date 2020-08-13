@@ -308,7 +308,7 @@ class _SignUpViewState extends State<SignUpView> {
   }
   Widget buildSocialIcons(bool visible) {
     final _auth = Provider.of(context).auth;
-    const padding = 25.0;
+
     return Visibility(
       child: Column(
         children: <Widget>[
@@ -318,7 +318,7 @@ class _SignUpViewState extends State<SignUpView> {
           GoogleSignInButton(
 
             borderRadius: 20.0,
-            text:" SignUp with Google  ",
+            text:"SignIn with Google  ",
             onPressed: () async {
               try {
                 if(authFormType == AuthFormType.convert) {
@@ -342,7 +342,7 @@ class _SignUpViewState extends State<SignUpView> {
 
             FacebookSignInButton(
               borderRadius: 20.0,
-                text:"SignUp with Facebook",
+                text:"SignIn with Facebook",
               //textStyle: TextStyle(fontSize: 20,),
 
               onPressed: () async{

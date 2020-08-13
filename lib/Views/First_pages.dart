@@ -53,19 +53,7 @@ class FirstView extends StatelessWidget {
                     ),
                   ),
                   onPressed: () {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) => CustomDialog(
-                        title: "Would you like to create a free account?",
-                        description:
-                        "With an account, your data will be securely saved, allowing you to access it from multiple devices.",
-                        primaryButtonText: "Create My Account",
-                        primaryButtonRoute: "/signUp",
-                        //secondaryButtonText: "Maybe Later",
-                       // secondaryButtonRoute: "/home",
-
-                      ),
-                    );
+                    Navigator.of(context).pushReplacementNamed('/signUp');
                   },
                 ),
                 SizedBox(height: _height * 0.05),

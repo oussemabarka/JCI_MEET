@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-class PofileView extends StatelessWidget {
+class PofileView1 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
