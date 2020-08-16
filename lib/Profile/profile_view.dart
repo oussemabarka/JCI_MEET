@@ -3,7 +3,8 @@ import 'package:jci_meet/models/user_model.dart';
 import 'package:jci_meet/Profile/user_controller.dart';
 import 'package:jci_meet/profile/avatar.dart';
 import 'package:flutter/material.dart';
-
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
 class ProfileView extends StatefulWidget {
 
 
@@ -33,7 +34,16 @@ class _ProfileViewState extends State<ProfileView> {
                 children: <Widget>[
                   Avatar(
                     avatarUrl: _currentUser?.avatarUrl,
-                    onTap: () {},
+                    onTap: () async {
+                      File image = await ImagePicker.pickImage(
+                          source: ImageSource.gallery);
+
+                      await locator
+                          .get<UserController>()
+                          .uploadProfilePicture(image);
+
+                      setState(() {});
+                    },
                   ),
                   Text(
                       "Hi ${_currentUser?.displayName ?? 'nice to see you here.'}"),
