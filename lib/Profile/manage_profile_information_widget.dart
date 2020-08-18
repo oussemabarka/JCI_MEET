@@ -54,6 +54,8 @@ class _ManageProfileInformationWidgetState
             ),
             SizedBox(height: 20.0),
             Flexible( //minimiser l'espace pour le barre jaune au lien expanded
+                child: Form(
+                  key: _formKey,
               child: Column(
                 children: <Widget>[
                   Text(
@@ -79,6 +81,7 @@ class _ManageProfileInformationWidgetState
                     style: TextStyle(fontSize: 15.0),
                     decoration: buildSignUpInputDecoration ( "Repeat Password"),
                     controller: _repeatPasswordController,
+                    obscureText: true,
                     validator: (value) {
                       return _newPasswordController.text == value
                           ? null
@@ -87,6 +90,7 @@ class _ManageProfileInformationWidgetState
                   )
                 ],
               ),
+            )
             ),
             RaisedButton(
               color: Colors.white,
@@ -106,11 +110,11 @@ class _ManageProfileInformationWidgetState
                     _passwordController.text);
 
                 setState(() {});
-                if (_formKey.currentState.validate() &&
-                    checkCurrentPasswordValid) {
+                if (_formKey.currentState.validate() ) {
                   userController.updateUserPassword(
                       _newPasswordController.text);
                   Navigator.pop(context);
+                //&&checkCurrentPasswordValid
                 }
               },
               child: Text("Save Profile",
