@@ -28,6 +28,11 @@ class UserController {
     _currentUser.displayName = displayName;
     _authRepo.updateDisplayName(displayName);
   }
+  Future<bool> validateCurrentPassword(String password) async {
+    return await _authRepo.validatePassword(password);
+  }
 
-
+  void updateUserPassword(String password) {
+    _authRepo.updatePassword(password);
+  }
 }

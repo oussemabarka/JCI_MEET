@@ -20,6 +20,10 @@ class _ManageProfileInformationWidgetState
   var _newPasswordController = TextEditingController();
   var _repeatPasswordController = TextEditingController();
 
+  var _formKey = GlobalKey<FormState>();
+
+  bool checkCurrentPasswordValid = true;
+
   @override
   void initState() {
     _displayNameController.text = widget.currentUser.displayName;
@@ -56,20 +60,30 @@ class _ManageProfileInformationWidgetState
                     "Manage Password",
                     style: TextStyle(fontSize: 15, color: Colors.white),
                   ),
-                  TextFormField(
-                    style: TextStyle(fontSize: 15.0),
-                    decoration: buildSignUpInputDecoration ( "Password"),
-                    controller: _passwordController,
-                  ),
+                //  TextFormField(
+                   // decoration: InputDecoration(
+                   //   hintText: "Password",
+                   //   errorText: checkCurrentPasswordValid
+                    //      ? null
+                      //    : "Please double check your current password",
+                 //   ),
+                  //  controller: _passwordController,
+                  //),
                   TextFormField(
                     style: TextStyle(fontSize: 15.0),
                     decoration: buildSignUpInputDecoration ( "New Password"),
                     controller: _newPasswordController,
+                    obscureText: true,
                   ),
                   TextFormField(
                     style: TextStyle(fontSize: 15.0),
                     decoration: buildSignUpInputDecoration ( "Repeat Password"),
                     controller: _repeatPasswordController,
+                    validator: (value) {
+                      return _newPasswordController.text == value
+                          ? null
+                          : "Please validate your entered password";
+                    },
                   )
                 ],
               ),
@@ -78,16 +92,26 @@ class _ManageProfileInformationWidgetState
               color: Colors.white,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30.0)),
-              onPressed: () {
+              onPressed: ()async  {
+                var userController = locator.get<UserController>();
+
                 if (widget.currentUser.displayName !=
                     _displayNameController.text) {
                   var displayName = _displayNameController.text;
-                  locator
-                      .get<UserController>()
+                  userController
                       .updateDisplayName(displayName);
                 }
+                checkCurrentPasswordValid =
+                    await userController.validateCurrentPassword(
+                    _passwordController.text);
 
-                Navigator.pop(context);
+                setState(() {});
+                if (_formKey.currentState.validate() &&
+                    checkCurrentPasswordValid) {
+                  userController.updateUserPassword(
+                      _newPasswordController.text);
+                  Navigator.pop(context);
+                }
               },
               child: Text("Save Profile",
                 style: TextStyle(
@@ -113,4 +137,5 @@ class _ManageProfileInformationWidgetState
       const EdgeInsets.only(left: 14.0, bottom: 10.0, top: 10.0),
     );
   }
+
 }
