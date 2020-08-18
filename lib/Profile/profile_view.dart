@@ -5,6 +5,8 @@ import 'package:jci_meet/profile/avatar.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
+import 'package:jci_meet/Profile/manage_profile_information_widget.dart';
+
 class ProfileView extends StatefulWidget {
 
 
@@ -13,6 +15,8 @@ class ProfileView extends StatefulWidget {
 }
 
 class _ProfileViewState extends State<ProfileView> {
+  final primaryColor = const Color(0xFF75A2EA);
+
   UserModel _currentUser = locator.get<UserController>().currentUser;
   @override
   Widget build(BuildContext context) {
@@ -46,54 +50,21 @@ class _ProfileViewState extends State<ProfileView> {
                     },
                   ),
                   Text(
-                      "Hi ${_currentUser?.displayName ?? 'nice to see you here.'}"),
+                      "Hi ${_currentUser?.displayName ?? 'nice to see you here.'}",
+                    style: TextStyle(fontSize: 15, color: Colors.white),
+                  ),
                 ],
               ),
             ),
           ),
           Expanded(
-              flex: 2,
-              child: Padding(
-                padding: const EdgeInsets.all(08.0),
-                child: Column(
-                  children: <Widget>[
-                    TextFormField(
-                      decoration: InputDecoration(hintText: "Username"),
-                    ),
-                    SizedBox(height: 08.0),
-                    Expanded(
-                      child: Column(
-                        children: <Widget>[
-                          Text(
-                            "Manage Password",
-                            style: Theme.of(context).textTheme.display1,
-                          ),
-                          TextFormField(
-                            decoration: InputDecoration(hintText: "Password"),
-                          ),
-                          TextFormField(
-                            decoration:
-                                InputDecoration(hintText: "New Password"),
-                          ),
-                          TextFormField(
-                            decoration:
-                                InputDecoration(hintText: "Repeat Password"),
-                          )
-                        ],
-                      ),
-                    ),
-                    RaisedButton(
-                      onPressed: () {
-                        // TODO: Save somehow
-                        Navigator.pop(context);
-                      },
-                      child: Text("Save Profile"),
-                    )
-                  ],
-                ),
-              ))
+    flex: 2,
+    child: ManageProfileInformationWidget(
+    currentUser: _currentUser,
+              )),
         ],
       ),
     );
   }
+
 }

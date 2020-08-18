@@ -24,7 +24,10 @@ class UserController {
     _currentUser = await _authRepo.getUser();
     return _currentUser;
   }
-
+  void updateDisplayName(String displayName) {
+    _currentUser.displayName = displayName;
+    _authRepo.updateDisplayName(displayName);
+  }
 
 
 }

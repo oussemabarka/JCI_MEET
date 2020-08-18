@@ -33,4 +33,11 @@ class AuthRepo {
     var firebaseUser = await _auth.currentUser();
     return UserModel(firebaseUser.uid, displayName: firebaseUser.displayName);
   }
+  Future<void> updateDisplayName(String displayName) async {
+    var user = await _auth.currentUser();
+
+    user.updateProfile(
+      UserUpdateInfo()..displayName = displayName,
+    );
+  }
 }
