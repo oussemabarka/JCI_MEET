@@ -1,9 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
+import 'dart:async';
 
 class AuthService {
+  static final FacebookLogin facebookSignIn = new FacebookLogin();
+
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
 
@@ -11,7 +15,41 @@ class AuthService {
       _firebaseAuth.onAuthStateChanged.map(
             (FirebaseUser user) => user?.uid,
       );
+  //////////////
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final Firestore _db = Firestore.instance;
 
+  // Shared State for Widgets
+  Observable<FirebaseUser> user; // firebase user
+  Observable<Map<String, dynamic>> profile; // custom user data in Firestore
+  PublishSubject loading = PublishSubject();
+  AuthService() {
+    user = Observable(_auth.onAuthStateChanged);
+
+    profile = user.switchMap((FirebaseUser u) {
+      if (u != null) {
+        return _db
+            .collection('users')
+            .document(u.uid)
+            .snapshots()
+            .map((snap) => snap.data);
+      } else {
+        return Observable.just({});
+      }
+    });
+  }
+  void updateUserData(FirebaseUser user) async {
+    DocumentReference ref = _db.collection('users').document(user.uid);
+
+    return ref.setData({
+      'uid': user.uid,
+      'email': user.email,
+      'photoURL': user.photoUrl,
+      'displayName': user.displayName,
+      'lastSeen': DateTime.now()
+    }, merge: true);
+  }
+  ///////////
   // Email & Password Sign Up
   Future<String> createUserWithEmailAndPassword(String email, String password,
       String name) async {
@@ -20,11 +58,19 @@ class AuthService {
       password: password,
     );
 
+
     // Update the username
     await updateUserName(name, authResult.user);
     return authResult.user.uid;
   }
-
+  // GET UID
+  Future<String> getCurrentUID() async {
+    return (await _firebaseAuth.currentUser()).uid;
+  }
+  // GET CURRENT USER
+  Future getCurrentUser() async {
+    return await _firebaseAuth.currentUser();
+  }
   Future updateUserName(String name, FirebaseUser currentUser) async {
     var userUpdateInfo = UserUpdateInfo();
     userUpdateInfo.displayName = name;
@@ -88,6 +134,11 @@ class AuthService {
 
         final FirebaseUser user = (await FirebaseAuth.instance.signInWithCredential(credential)).user;
         print('signed in ' + user.displayName);
+        updateUserData(user);
+/////////////
+
+/////////////
+
         return user;
       }
 
@@ -122,8 +173,43 @@ class AuthService {
       print(e.message);
     }
   }
+  //google with firestore
+  Future<FirebaseUser> signInWithGoogle1() async {
+    final GoogleSignInAccount googleSignInAccount = await _googleSignIn.signIn();
+    final GoogleSignInAuthentication googleSignInAuthentication =
+    await googleSignInAccount.authentication;
 
-  
+    final AuthCredential credential = GoogleAuthProvider.getCredential(
+      accessToken: googleSignInAuthentication.accessToken,
+      idToken: googleSignInAuthentication.idToken,
+    );
+
+    final AuthResult authResult =
+    await _firebaseAuth.signInWithCredential(credential);
+    final FirebaseUser user = authResult.user;
+
+    final FirebaseUser currentUser = await _firebaseAuth.currentUser();
+    if (currentUser != null) {
+      final QuerySnapshot result = await Firestore.instance
+          .collection('users')
+          .where("id", isEqualTo: currentUser.uid)
+          .getDocuments();
+      final List<DocumentSnapshot> document = result.documents;
+      if (document.length == 0) {
+        Firestore.instance
+            .collection('users')
+            .document(currentUser.uid)
+            .setData({
+          'id': currentUser.uid,
+          "email":currentUser.email,
+          'username': currentUser.displayName,
+          'profilePicture': currentUser.photoUrl
+        });
+      } else {}
+    }
+    return user;
+  }
+
 }
 
 class NameValidator {
@@ -157,4 +243,47 @@ class PasswordValidator {
     }
     return null;
   }
+}
+class UserInfoDetails {
+  UserInfoDetails(this.providerId, this.uid, this.displayName, this.photoUrl,
+      this.email, this.isAnonymous, this.isEmailVerified, this.providerData);
+
+  /// The provider identifier.
+  final String providerId;
+
+  /// The provider’s user ID for the user.
+  final String uid;
+
+  /// The name of the user.
+  final String displayName;
+
+  /// The URL of the user’s profile photo.
+  final String photoUrl;
+
+  /// The user’s email address.
+  final String email;
+
+  // Check anonymous
+  final bool isAnonymous;
+
+  //Check if email is verified
+  final bool isEmailVerified;
+
+  //Provider Data
+  final List<ProviderDetails> providerData;
+}
+
+class ProviderDetails {
+  final String providerId;
+
+  final String uid;
+
+  final String displayName;
+
+  final String photoUrl;
+
+  final String email;
+
+  ProviderDetails(
+      this.providerId, this.uid, this.displayName, this.photoUrl, this.email);
 }

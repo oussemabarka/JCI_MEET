@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:jci_meet/Profile/manage_profile_information_widget.dart';
-
 class ProfileView extends StatefulWidget {
 
 
@@ -50,9 +49,11 @@ class _ProfileViewState extends State<ProfileView> {
                     },
                   ),
                   Text(
+
                       "Hi ${_currentUser?.displayName ?? 'nice to see you here.'}",
                     style: TextStyle(fontSize: 15, color: Colors.white),
                   ),
+
                 ],
               ),
             ),

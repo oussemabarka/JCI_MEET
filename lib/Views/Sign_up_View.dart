@@ -325,7 +325,7 @@ class _SignUpViewState extends State<SignUpView> {
                   await _auth.converWithGoogle();
                   Navigator.of(context).pop();
                 } else {
-                  await _auth.signInWithGoogle();
+                  await _auth.signInWithGoogle1();
                   Navigator.of(context).pushReplacementNamed('/home');
                 }
               } catch (e) {

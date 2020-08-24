@@ -60,7 +60,7 @@ class _ManageProfileInformationWidgetState
                 children: <Widget>[
                   Text(
                     "Manage Password",
-                    style: TextStyle(fontSize: 15, color: Colors.white),
+                    style: TextStyle(fontSize: 15, color: Colors.black),
                   ),
                 //  TextFormField(
                    // decoration: InputDecoration(
