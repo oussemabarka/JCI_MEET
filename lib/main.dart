@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'home_page.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:jci_meet/Views/First_pages.dart';
 import 'package:jci_meet/Services/auth_service.dart';
 import 'package:jci_meet/widgets/provider_widget.dart';
@@ -20,6 +22,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return Provider(
       auth: AuthService(),
+      db: Firestore.instance,
 
       child: MaterialApp(
         title: "JCI Meet",
@@ -47,6 +50,7 @@ class MyApp extends StatelessWidget {
 class HomeController extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+
     final AuthService auth = Provider.of(context).auth;
     return StreamBuilder<String>(
       stream: auth.onAuthStateChanged,

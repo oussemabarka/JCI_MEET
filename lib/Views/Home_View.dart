@@ -5,7 +5,8 @@ class HomeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body:StreamBuilder(
+      body:
+    StreamBuilder(
         stream: Firestore.instance.collection("Category").snapshots(),
              builder: (context  , snapshot){
               return ListView.builder(
@@ -13,8 +14,9 @@ class HomeView extends StatelessWidget {
                   itemBuilder:(context,index){
                 DocumentSnapshot cat = snapshot.data.documents[index];
                     return ListTile(
-                    leading:Image.network(cat['image']),
-                    title: Text(cat['name']),
+
+                                leading:Image.network(cat['image']),
+                              title: Text(cat['name']),
                         onTap: () {
                           Navigator.push(
                             context,

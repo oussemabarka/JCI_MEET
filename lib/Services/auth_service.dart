@@ -167,7 +167,7 @@ class AuthService {
 
       final FirebaseUser user = (await _auth.signInWithCredential(credential)).user;
       print("signed in " + user.displayName);
-
+      updateUserData(user);
       return user;
     }catch (e) {
       print(e.message);
@@ -192,7 +192,7 @@ class AuthService {
     if (currentUser != null) {
       final QuerySnapshot result = await Firestore.instance
           .collection('users')
-          .where("id", isEqualTo: currentUser.uid)
+          .where("uid", isEqualTo: currentUser.uid)
           .getDocuments();
       final List<DocumentSnapshot> document = result.documents;
       if (document.length == 0) {
@@ -200,10 +200,10 @@ class AuthService {
             .collection('users')
             .document(currentUser.uid)
             .setData({
-          'id': currentUser.uid,
+          'uid': currentUser.uid,
           "email":currentUser.email,
-          'username': currentUser.displayName,
-          'profilePicture': currentUser.photoUrl
+          'displayName': currentUser.displayName,
+          'photoURL': currentUser.photoUrl
         });
       } else {}
     }

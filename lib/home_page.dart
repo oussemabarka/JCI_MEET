@@ -25,6 +25,7 @@ class _HomeState extends State<Home> {
     return Scaffold(
       appBar: AppBar(
         title: Text("JCI Meet"),
+
         actions: <Widget>[
 
           IconButton(
